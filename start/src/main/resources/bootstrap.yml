@@ -2,6 +2,7 @@ server:
   port: 9999
 #  servlet:
 #    context-path: /iam
+
 spring:
   mvc:
     pathmatch:
@@ -13,7 +14,8 @@ spring:
     nacos:
       #服务发现
       discovery:
-        enabled: false
+        ip: dev.meshed.cn
+        enabled: true
         server-addr: nacos.meshed.cn:8848
         namespace: meshed-cloud
         metadata:
@@ -21,7 +23,7 @@ spring:
             context-path: ${server.servlet.context-path}/actuator
       #服务配置
       config:
-        enabled: false
+        enabled: true
         # 配置中心地址
         server-addr: nacos.meshed.cn:8848
         # 配置文件格式
@@ -45,19 +47,24 @@ spring:
   #          data-id: file.yaml
   #          group: DEFAULT_GROUP     # 默认为DEFAULT_GROUP
   #          refresh: true            # 是否动态刷新，默认为false
-  profiles:
-    active: dev
 
 dubbo:
   protocol:
     name: dubbo
-    port: -1
+    port: 20880
     check: false
   registry:
     address: nacos://${spring.cloud.nacos.config.server-addr}
+    use-as-config-center: false
+    group: meshed-dubbo
+    parameters:
+      namespace: meshed-cloud-dubbo
   application:
     name: iam-dubbo
     register-consumer: true
+    group: meshed-dubbo
+    parameters:
+      namespace: meshed-cloud-dubbo
   consumer:
     check: false
     timeout: 5000

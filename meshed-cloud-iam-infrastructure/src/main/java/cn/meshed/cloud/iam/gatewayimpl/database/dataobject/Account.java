@@ -1,11 +1,17 @@
 package cn.meshed.cloud.iam.gatewayimpl.database.dataobject;
 
+import cn.meshed.cloud.iam.domain.dto.enums.IAMStatus;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -15,6 +21,8 @@ import lombok.EqualsAndHashCode;
  * @author by Vincent Vic
  * @since 2022-10-04
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("m_account")
@@ -25,6 +33,7 @@ public class Account implements Serializable {
     /**
      * ID
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
 
@@ -46,13 +55,13 @@ public class Account implements Serializable {
     /**
      * 账号手机号是否有效 0 否 1 是
      */
-    @TableId("is_valid_phone")
+    @TableField("is_valid_phone")
     private Boolean validPhone;
 
     /**
      * 账号有效是否有效  0 否 1 是
      */
-    @TableId("is_valid_email")
+    @TableField("is_valid_email")
     private Boolean validEmail;
 
     /**
@@ -64,14 +73,19 @@ public class Account implements Serializable {
     /**
      * 是否过期 0 否 1 是
      */
-    @TableId("is_expired")
+    @TableField("is_expired")
     private Boolean expired;
 
     /**
      * 是否锁定 0 否 1 是
      */
-    @TableId("is_locked")
+    @TableField("is_locked")
     private Boolean locked;
+
+    /**
+     * 状态
+     */
+    private IAMStatus status;
 
     /**
      * 创建人

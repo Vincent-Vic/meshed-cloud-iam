@@ -1,23 +1,35 @@
-package cn.meshed.cloud.iam.domain.dto;
+package cn.meshed.cloud.iam.domain.dto.vo;
 
+import cn.meshed.cloud.iam.domain.dto.enums.IAMStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
- * <h1></h1>
+ * <p>
+ * 
+ * </p>
  *
- * @author Vincent Vic
- * @version 1.0
+ * @author by Vincent Vic
+ * @since 2022-10-04
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class AccountDTO {
+@EqualsAndHashCode(callSuper = false)
+public class AccountVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
      */
     private Long id;
+
 
     /**
      * 账号登入主名称
@@ -35,29 +47,30 @@ public class AccountDTO {
     private String email;
 
     /**
-     * 账号手机号是否有效
+     * 账号手机号是否有效 0 否 1 是
      */
     private Boolean validPhone;
 
     /**
-     * 账号有效是否有效
+     * 账号有效是否有效  0 否 1 是
      */
     private Boolean validEmail;
 
-    /**
-     * 账号加密后的密码
-     */
-    private String secretKey;
 
     /**
-     * 是否过期
+     * 是否过期 0 否 1 是
      */
     private Boolean expired;
 
     /**
-     * 是否锁定
+     * 是否锁定 0 否 1 是
      */
     private Boolean locked;
+
+    /**
+     * 状态
+     */
+    private IAMStatus status;
 
     /**
      * 创建人
@@ -78,4 +91,6 @@ public class AccountDTO {
      * 更新时间
      */
     private LocalDateTime updateTime;
+
+
 }

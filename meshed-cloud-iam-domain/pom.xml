@@ -20,8 +20,21 @@
         </dependency>
         <dependency>
             <groupId>com.alibaba.cola</groupId>
+            <artifactId>cola-component-dto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cola</groupId>
             <artifactId>cola-component-exception</artifactId>
         </dependency>
         <!-- COLA components End-->
+
+        <dependency>
+            <groupId>cn.meshed.base</groupId>
+            <artifactId>meshed-cloud-common-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.meshed.base</groupId>
+            <artifactId>meshed-cloud-cqrs-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>

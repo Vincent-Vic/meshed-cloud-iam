@@ -28,6 +28,7 @@
         <meshed.mysql.version>1.0.0-SNAPSHOT</meshed.mysql.version>
         <meshed.common.version>1.0.0-SNAPSHOT</meshed.common.version>
         <meshed.cqrs.version>1.0.0-SNAPSHOT</meshed.cqrs.version>
+        <meshed.dubbo.version>1.0.0-SNAPSHOT</meshed.dubbo.version>
 
     </properties>
 
@@ -117,7 +118,11 @@
                 <artifactId>meshed-cloud-cqrs-starter</artifactId>
                 <version>${meshed.cqrs.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.meshed.cloud</groupId>
+                <artifactId>meshed-cloud-dubbo-starter</artifactId>
+                <version>${meshed.dubbo.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
