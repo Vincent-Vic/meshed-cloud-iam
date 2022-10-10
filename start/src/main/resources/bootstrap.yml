@@ -14,7 +14,6 @@ spring:
     nacos:
       #服务发现
       discovery:
-        ip: dev.meshed.cn
         enabled: true
         server-addr: nacos.meshed.cn:8848
         namespace: meshed-cloud
@@ -51,18 +50,15 @@ spring:
 dubbo:
   protocol:
     name: dubbo
-    port: 20880
+    port: -1
     check: false
   registry:
-    address: nacos://${spring.cloud.nacos.config.server-addr}
+    address: nacos://${spring.cloud.nacos.config.server-addr}?namespace=meshed-cloud-dubbo
     use-as-config-center: false
-    group: meshed-dubbo
-    parameters:
-      namespace: meshed-cloud-dubbo
+    id: nacos
   application:
     name: iam-dubbo
     register-consumer: true
-    group: meshed-dubbo
     parameters:
       namespace: meshed-cloud-dubbo
   consumer:

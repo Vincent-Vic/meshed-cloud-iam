@@ -2,10 +2,12 @@ package cn.meshed.cloud.iam.gatewayimpl.database.dataobject;
 
 import cn.meshed.cloud.iam.domain.dto.enums.IAMStatus;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.ibatis.type.EnumOrdinalTypeHandler;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -46,7 +48,7 @@ public class Role implements Serializable {
     /**
      * 状态
      */
-    private IAMStatus status;
+    private Integer status;
 
     /**
      * 备注

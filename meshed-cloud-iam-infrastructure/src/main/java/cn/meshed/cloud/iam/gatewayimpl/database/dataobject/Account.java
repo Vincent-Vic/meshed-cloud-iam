@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.type.EnumOrdinalTypeHandler;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -85,7 +86,8 @@ public class Account implements Serializable {
     /**
      * 状态
      */
-    private IAMStatus status;
+//    @TableField(value = "status",typeHandler = EnumOrdinalTypeHandler.class)
+    private Integer status;
 
     /**
      * 创建人
