@@ -4,10 +4,6 @@ server:
 #    context-path: /iam
 
 spring:
-  mvc:
-    pathmatch:
-      # 配置策略
-      matching-strategy: ANT_PATH_MATCHER
   application:
     name: iam
   cloud:
@@ -41,6 +37,10 @@ spring:
           data-id: mybatis-common.yaml # 配置文件名-Data Id
           group: DEFAULT_GROUP   # 默认为DEFAULT_GROUP
           refresh: true   # 是否动态刷新，默认为false
+        shared-configs[2]:
+          data-id: dubbo.yaml # 配置文件名-Data Id
+          group: DEFAULT_GROUP   # 默认为DEFAULT_GROUP
+          refresh: true   # 是否动态刷新，默认为false
         # 扩展配置
   #        extension-configs[0]:
   #          data-id: file.yaml
@@ -48,23 +48,5 @@ spring:
   #          refresh: true            # 是否动态刷新，默认为false
 
 dubbo:
-  protocol:
-    name: dubbo
-    port: -1
-    check: false
-  registry:
-    address: nacos://${spring.cloud.nacos.config.server-addr}?namespace=meshed-cloud-dubbo
-    use-as-config-center: false
-    id: nacos
   application:
     name: iam-dubbo
-    register-consumer: true
-    parameters:
-      namespace: meshed-cloud-dubbo
-  consumer:
-    check: false
-    timeout: 5000
-    retries: 2
-  reference:
-    check: false
-
