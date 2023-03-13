@@ -12,6 +12,10 @@
     <packaging>jar</packaging>
     <name>meshed-cloud-iam-app</name>
 
+    <properties>
+        <spring.security.crypto.version>5.7.1</spring.security.crypto.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>cn.meshed.cloud.iam</groupId>
@@ -28,13 +32,18 @@
         </dependency>
 
         <dependency>
-            <groupId>cn.meshed.base</groupId>
-            <artifactId>meshed-cloud-common-starter</artifactId>
+            <groupId>cn.meshed.cloud</groupId>
+            <artifactId>meshed-cloud-common</artifactId>
         </dependency>
 
         <dependency>
             <groupId>cn.meshed.cloud</groupId>
             <artifactId>meshed-cloud-dubbo-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
         </dependency>
     </dependencies>
 </project>

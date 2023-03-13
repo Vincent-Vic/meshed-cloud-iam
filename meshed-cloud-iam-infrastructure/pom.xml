@@ -29,10 +29,13 @@
             <version>${meshed.mysql.version}</version>
         </dependency>
         <dependency>
-            <groupId>cn.meshed.base</groupId>
-            <artifactId>meshed-cloud-cqrs-starter</artifactId>
+            <groupId>cn.meshed.cloud</groupId>
+            <artifactId>meshed-cloud-cqrs</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>cn.meshed.cloud</groupId>
+            <artifactId>meshed-cloud-context-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>

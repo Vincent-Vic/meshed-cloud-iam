@@ -12,14 +12,56 @@
     <packaging>jar</packaging>
     <name>meshed-cloud-iam-adapter</name>
 
+    <properties>
+        <!-- sa-token -->
+        <sa-token-version>1.31.0</sa-token-version>
+    </properties>
     <dependencies>
-        <dependency>
-            <groupId>cn.meshed.cloud.iam</groupId>
-            <artifactId>meshed-cloud-iam-client</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <!-- Sa-Token 权限认证, 在线文档：http://sa-token.dev33.cn/ -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>${sa-token-version}</version>
+        </dependency>
+
+        <!-- Sa-Token-OAuth2.0 模块 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-oauth2</artifactId>
+            <version>${sa-token-version}</version>
+        </dependency>
+
+        <!-- Sa-Token整合Redis (使用jackson序列化方式) -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-dao-redis-jackson</artifactId>
+            <version>${sa-token-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- thymeleaf 视图引擎 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- ConfigurationProperties -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.meshed.cloud.iam</groupId>
+            <artifactId>meshed-cloud-iam-domain</artifactId>
         </dependency>
     </dependencies>
 </project>

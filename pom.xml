@@ -29,7 +29,8 @@
         <meshed.common.version>1.0.0-SNAPSHOT</meshed.common.version>
         <meshed.cqrs.version>1.0.0-SNAPSHOT</meshed.cqrs.version>
         <meshed.dubbo.version>1.0.0-SNAPSHOT</meshed.dubbo.version>
-
+        <meshed.context.version>1.0.0-SNAPSHOT</meshed.context.version>
+        <spring.security.crypto.version>5.7.1</spring.security.crypto.version>
     </properties>
 
     <modules>
@@ -96,16 +97,8 @@
             </dependency>
 
             <dependency>
-                <groupId>cn.meshed.base</groupId>
-                <artifactId>meshed-cloud-cola-bom</artifactId>
-                <version>${meshed.cola.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.meshed.base</groupId>
-                <artifactId>meshed-cloud-common-starter</artifactId>
+                <groupId>cn.meshed.cloud</groupId>
+                <artifactId>meshed-cloud-common</artifactId>
                 <version>${meshed.common.version}</version>
             </dependency>
             <dependency>
@@ -114,14 +107,24 @@
                 <version>${meshed.mysql.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.meshed.base</groupId>
-                <artifactId>meshed-cloud-cqrs-starter</artifactId>
+                <groupId>cn.meshed.cloud</groupId>
+                <artifactId>meshed-cloud-cqrs</artifactId>
                 <version>${meshed.cqrs.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.meshed.cloud</groupId>
                 <artifactId>meshed-cloud-dubbo-starter</artifactId>
                 <version>${meshed.dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.meshed.cloud</groupId>
+                <artifactId>meshed-cloud-context-starter</artifactId>
+                <version>${meshed.context.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>${spring.security.crypto.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
