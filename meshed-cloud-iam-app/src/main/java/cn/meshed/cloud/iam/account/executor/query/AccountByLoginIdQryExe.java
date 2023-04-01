@@ -1,7 +1,7 @@
 package cn.meshed.cloud.iam.account.executor.query;
 
 
-import cn.meshed.cloud.cqrs.CommandExecute;
+import cn.meshed.cloud.cqrs.QueryExecute;
 import cn.meshed.cloud.iam.account.data.AccountDTO;
 import cn.meshed.cloud.iam.account.query.AccountByLoginIdQry;
 import cn.meshed.cloud.iam.account.query.GrantedAuthorityQry;
@@ -28,24 +28,25 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class AccountByLoginIdQryExe implements CommandExecute<AccountByLoginIdQry, SingleResponse<Account>> {
+public class AccountByLoginIdQryExe implements QueryExecute<AccountByLoginIdQry, SingleResponse<Account>> {
 
     private final AccountGateway accountGateway;
     private final GrantedAuthorityQryExe grantedAuthorityQryExe;
 
     /**
      * <h2>查询执行器</h2>
+     *
      * @param accountByLoginIdQry 请求对象
      * @return {@link AccountDTO}
      */
     @Override
     public SingleResponse<Account> execute(AccountByLoginIdQry accountByLoginIdQry) {
         String loginId = accountByLoginIdQry.getLoginId();
-        if (StringUtils.isBlank(loginId)){
+        if (StringUtils.isBlank(loginId)) {
             return null;
         }
         Account account = accountGateway.getAccountByLoginId(loginId);
-        if (account == null){
+        if (account == null) {
             return null;
         }
 
@@ -59,7 +60,7 @@ public class AccountByLoginIdQryExe implements CommandExecute<AccountByLoginIdQr
         GrantedAuthorityQry grantedAuthorityQry = new GrantedAuthorityQry();
         grantedAuthorityQry.setAccountId(account.getId());
         SingleResponse<Set<PermissionDTO>> response = grantedAuthorityQryExe.execute(grantedAuthorityQry);
-        if (!response.isSuccess() || CollectionUtils.isEmpty(response.getData())){
+        if (!response.isSuccess() || CollectionUtils.isEmpty(response.getData())) {
             return Sets.newHashSet();
         }
         return response.getData().stream().map(PermissionDTO::getEnname).collect(Collectors.toSet());

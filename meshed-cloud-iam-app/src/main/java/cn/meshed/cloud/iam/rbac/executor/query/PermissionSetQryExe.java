@@ -1,6 +1,6 @@
 package cn.meshed.cloud.iam.rbac.executor.query;
 
-import cn.meshed.cloud.cqrs.CommandExecute;
+import cn.meshed.cloud.cqrs.QueryExecute;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
 import cn.meshed.cloud.iam.domain.rbac.gateway.PermissionGateway;
 import cn.meshed.cloud.iam.rbac.data.PermissionDTO;
@@ -22,7 +22,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class PermissionSetQryExe implements CommandExecute<PermissionSetQry, SingleResponse<Set<PermissionDTO>>> {
+public class PermissionSetQryExe implements QueryExecute<PermissionSetQry, SingleResponse<Set<PermissionDTO>>> {
 
     private final PermissionGateway permissionGateway;
 
@@ -31,8 +31,8 @@ public class PermissionSetQryExe implements CommandExecute<PermissionSetQry, Sin
      * @return
      */
     @Override
-    public SingleResponse<Set<PermissionDTO>>execute(PermissionSetQry permissionSetQry) {
+    public SingleResponse<Set<PermissionDTO>> execute(PermissionSetQry permissionSetQry) {
         Set<Permission> permissionSet = permissionGateway.getPermissionSet(permissionSetQry.getRoleIds());
-        return ResultUtils.copySet(permissionSet,PermissionDTO::new);
+        return ResultUtils.copySet(permissionSet, PermissionDTO::new);
     }
 }

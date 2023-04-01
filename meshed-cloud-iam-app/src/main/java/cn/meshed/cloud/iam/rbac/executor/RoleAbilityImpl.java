@@ -1,6 +1,6 @@
 package cn.meshed.cloud.iam.rbac.executor;
 
-import cn.meshed.cloud.iam.domain.rbac.ability.RoleService;
+import cn.meshed.cloud.iam.domain.rbac.ability.RoleAbility;
 import cn.meshed.cloud.iam.rbac.command.RoleCmd;
 import cn.meshed.cloud.iam.rbac.command.RoleGrantPermissionCmd;
 import cn.meshed.cloud.iam.rbac.data.RoleDTO;
@@ -12,18 +12,14 @@ import cn.meshed.cloud.iam.rbac.executor.query.RoleByIdQryExe;
 import cn.meshed.cloud.iam.rbac.executor.query.RoleBySelectQryExe;
 import cn.meshed.cloud.iam.rbac.executor.query.RoleListQryExe;
 import cn.meshed.cloud.iam.rbac.executor.query.RolePermissionByIdQryExe;
-import cn.meshed.cloud.iam.rbac.query.RoleByIdQry;
 import cn.meshed.cloud.iam.rbac.query.RoleBySelectQry;
-import cn.meshed.cloud.iam.rbac.query.RolePermissionByIdQry;
 import cn.meshed.cloud.iam.rbac.query.RoleQry;
+import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * <h1>角色操作能力</h1>
@@ -34,7 +30,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class RoleServiceImpl implements RoleService {
+public class RoleAbilityImpl implements RoleAbility {
 
     private final RoleCmdExe roleCmdExe;
     private final RoleDelExe roleDelExe;
@@ -49,12 +45,13 @@ public class RoleServiceImpl implements RoleService {
      * @return
      */
     @Override
-    public SingleResponse<List<RoleDTO>> searchList(RoleQry roleQry) {
+    public MultiResponse<RoleDTO> searchList(RoleQry roleQry) {
         return roleListQryExe.execute(roleQry);
     }
 
     /**
      * 删除
+     *
      * @param id id
      * @return 删除结果
      */
@@ -65,6 +62,7 @@ public class RoleServiceImpl implements RoleService {
 
     /**
      * 保存
+     *
      * @param roleCmd 保存对象
      * @return 操作结果
      */
@@ -87,13 +85,14 @@ public class RoleServiceImpl implements RoleService {
     /**
      * 角色权限列表
      *
-     * @param rolePermissionByIdQry 角色权限列表参数
-     * @return
+     * @param roleId 角色编码
+     * @return 权限编码列表
      */
     @Override
-    public SingleResponse<Set<Long>> permissions(RolePermissionByIdQry rolePermissionByIdQry) {
-        return rolePermissionByIdQryExe.execute(rolePermissionByIdQry);
+    public MultiResponse<Long> getPermissionIds(Long roleId) {
+        return rolePermissionByIdQryExe.execute(roleId);
     }
+
 
     /**
      * 角色选择列表
@@ -102,17 +101,17 @@ public class RoleServiceImpl implements RoleService {
      * @return
      */
     @Override
-    public SingleResponse<List<RoleOptionDTO>> select(RoleBySelectQry roleBySelectQry) {
+    public MultiResponse<RoleOptionDTO> select(RoleBySelectQry roleBySelectQry) {
         return roleBySelectQryExe.execute(roleBySelectQry);
     }
 
     /**
-     * @param roleByIdQry
+     * @param roleId
      * @return
      */
     @Override
-    public SingleResponse<RoleDTO> query(RoleByIdQry roleByIdQry) {
-        return roleByIdQryExe.execute(roleByIdQry);
+    public SingleResponse<RoleDTO> query(Long roleId) {
+        return roleByIdQryExe.execute(roleId);
     }
 
 

@@ -29,6 +29,7 @@ public class DoLoginHandleCmdExe implements CommandExecute<DoLoginHandleCmd, Res
     private final AccountByLoginIdQryExe accountByLoginIdQryExe;
     private final EncryptionService encryptionService;
     private final LoginSuccessCmdExe loginSuccessCmdExe;
+
     /**
      * @param doLoginHandleCmd
      * @return
@@ -38,13 +39,13 @@ public class DoLoginHandleCmdExe implements CommandExecute<DoLoginHandleCmd, Res
         AccountByLoginIdQry accountByLoginIdQry = new AccountByLoginIdQry();
         accountByLoginIdQry.setLoginId(doLoginHandleCmd.getLoginName());
         SingleResponse<Account> response = accountByLoginIdQryExe.execute(accountByLoginIdQry);
-        if (response == null || !response.isSuccess() || !isLogin(doLoginHandleCmd, response.getData())){
-            return SingleResponse.buildFailure("400","账号或密码不正确");
+        if (response == null || !response.isSuccess() || !isLogin(doLoginHandleCmd, response.getData())) {
+            return SingleResponse.buildFailure("400", "账号或密码不正确");
         }
         return loginSuccessCmdExe.execute(CopyUtils.copy(response.getData(), LoginSuccessCmd.class));
     }
 
     private Boolean isLogin(DoLoginHandleCmd doLoginHandleCmd, Account account) {
-        return encryptionService.matches(doLoginHandleCmd.getPassword(),account.getSecretKey());
+        return encryptionService.matches(doLoginHandleCmd.getPassword(), account.getSecretKey());
     }
 }

@@ -27,6 +27,6 @@ public class AccountDelExe implements CommandExecute<Long, Response> {
      */
     @Override
     public Response execute(Long id) {
-        return ResultUtils.of(accountGateway.delete(id),"删除账号失败");
+        return ResultUtils.of(accountGateway.delete(id), "删除账号失败");
     }
 }

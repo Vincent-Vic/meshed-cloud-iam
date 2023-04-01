@@ -1,18 +1,18 @@
 package cn.meshed.cloud.iam.domain.account.ability;
 
-import cn.meshed.cloud.ability.BaseAbility;
+import cn.meshed.cloud.core.IDelete;
 import cn.meshed.cloud.core.IPageList;
+import cn.meshed.cloud.core.IQuery;
+import cn.meshed.cloud.core.ISave;
 import cn.meshed.cloud.iam.account.command.AccountAddCmd;
 import cn.meshed.cloud.iam.account.command.AccountGrantRoleCmd;
 import cn.meshed.cloud.iam.account.command.AccountLockCmd;
 import cn.meshed.cloud.iam.account.data.AccountDTO;
-import cn.meshed.cloud.iam.account.query.AccountByIdQry;
-import cn.meshed.cloud.iam.account.query.AccountQry;
+import cn.meshed.cloud.iam.account.query.AccountPageQry;
+import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
-
-import java.util.Set;
 
 /**
  * <h1></h1>
@@ -20,9 +20,9 @@ import java.util.Set;
  * @author Vincent Vic
  * @version 1.0
  */
-public interface AccountService
-        extends BaseAbility<AccountAddCmd, AccountAddCmd, Long, AccountByIdQry, Response, SingleResponse<AccountDTO>>,
-        IPageList<AccountQry, PageResponse<AccountDTO>> {
+public interface AccountAbility
+        extends IPageList<AccountPageQry, PageResponse<AccountDTO>>, ISave<AccountAddCmd, Response>,
+        IQuery<Long, SingleResponse<AccountDTO>>, IDelete<Long, Response> {
 
     /**
      * 授权用户角色
@@ -35,10 +35,10 @@ public interface AccountService
     /**
      * 授权用户角色
      *
-     * @param accountByIdQry 账号ID查询对象
+     * @param id 账号ID
      * @return 处理结果
      */
-    SingleResponse<Set<Long>> getAccountRoles(AccountByIdQry accountByIdQry);
+    MultiResponse<Long> getAccountRoles(Long id);
 
     /**
      * 账号的锁定和解锁

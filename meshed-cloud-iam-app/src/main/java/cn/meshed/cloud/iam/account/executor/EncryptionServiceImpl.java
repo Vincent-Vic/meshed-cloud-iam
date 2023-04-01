@@ -37,6 +37,6 @@ public class EncryptionServiceImpl implements EncryptionService {
      */
     @Override
     public boolean matches(String unencrypted, String encrypted) {
-        return passwordEncoder.matches(unencrypted,encrypted);
+        return passwordEncoder.matches(unencrypted, encrypted);
     }
 }

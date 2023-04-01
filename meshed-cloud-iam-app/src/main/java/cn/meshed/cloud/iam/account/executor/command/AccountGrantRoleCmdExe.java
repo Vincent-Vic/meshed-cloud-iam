@@ -30,6 +30,6 @@ public class AccountGrantRoleCmdExe implements CommandExecute<AccountGrantRoleCm
     public Response execute(AccountGrantRoleCmd accountGrantRoleCmd) {
         Boolean grantRole = accountGateway.grantRole(accountGrantRoleCmd.getAccountId(),
                 accountGrantRoleCmd.getRoleIds());
-        return ResultUtils.of(grantRole,"授权角色失败");
+        return ResultUtils.of(grantRole, "授权角色失败");
     }
 }

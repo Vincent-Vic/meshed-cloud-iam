@@ -31,6 +31,6 @@ public class RoleGrantPermissionCmdExe implements CommandExecute<RoleGrantPermis
 
         Boolean grantPermission = roleGateway.grantPermission(roleGrantPermissionCmd.getRoleId(),
                 roleGrantPermissionCmd.getPermissionIds());
-        return ResultUtils.of(grantPermission,"保存失败");
+        return ResultUtils.of(grantPermission, "保存失败");
     }
 }

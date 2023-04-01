@@ -29,7 +29,7 @@ public class PermissionDelExe implements CommandExecute<Long, Response> {
     @Override
     public Response execute(Long id) {
         //参数校验
-        AssertUtils.isTrue(id != null,"参数缺失");
+        AssertUtils.isTrue(id != null, "参数缺失");
         return ResultUtils.of(permissionGateway.delete(id));
     }
 }

@@ -102,17 +102,17 @@
       function doLogin() {
           console.log('-----------');
           $.ajax({
-              url: '/oauth2/doLogin',
+              url: '/iam/oauth2/doLogin',
               data: {
                   name: $('[name=name]').val(),
                   pwd: $('[name=pwd]').val()
               },
               dataType: 'json',
-              success: function(res) {
-                  if(res !== undefined && res.success) {
-                    location.reload(true);
+              success: function (res) {
+                  if (res !== undefined && res.success) {
+                      location.reload(true);
                   } else {
-                     $('[name=pwd]').val("")
+                      $('[name=pwd]').val("")
                       layer.alert(res.errMessage);
                   }
               },

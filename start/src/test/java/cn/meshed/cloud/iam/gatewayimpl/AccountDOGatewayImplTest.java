@@ -1,7 +1,7 @@
 package cn.meshed.cloud.iam.gatewayimpl;
 
 import cn.meshed.cloud.iam.ProviderApplication;
-import cn.meshed.cloud.iam.account.query.AccountQry;
+import cn.meshed.cloud.iam.account.query.AccountPageQry;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
 import com.alibaba.cola.dto.PageResponse;
@@ -39,8 +39,8 @@ public class AccountDOGatewayImplTest {
 
     @Test
     public void testSearchPageList() {
-        AccountQry accountQry = new AccountQry();
-        PageResponse<Account> response = accountGateway.searchPageList(accountQry);
+        AccountPageQry accountPageQry = new AccountPageQry();
+        PageResponse<Account> response = accountGateway.searchPageList(accountPageQry);
     }
 
     @Test

@@ -1,8 +1,8 @@
 package cn.meshed.cloud.iam.account.executor.query;
 
-import cn.meshed.cloud.cqrs.CommandExecute;
+import cn.meshed.cloud.cqrs.QueryExecute;
 import cn.meshed.cloud.iam.account.data.AccountDTO;
-import cn.meshed.cloud.iam.account.query.AccountQry;
+import cn.meshed.cloud.iam.account.query.AccountPageQry;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
 import cn.meshed.cloud.utils.ResultUtils;
@@ -20,17 +20,19 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class AccountListQryExe implements CommandExecute<AccountQry, PageResponse<AccountDTO>> {
+public class AccountPageQryExe implements QueryExecute<AccountPageQry, PageResponse<AccountDTO>> {
 
     private final AccountGateway accountGateway;
 
     /**
-     * @param accountQry
-     * @return
+     * 分页列表
+     *
+     * @param pageQry 分页参数
+     * @return {@link PageResponse<AccountDTO>}
      */
     @Override
-    public PageResponse<AccountDTO> execute(AccountQry accountQry) {
-        PageResponse<Account> response = accountGateway.searchPageList(accountQry);
-        return ResultUtils.copyPage(response,AccountDTO::new);
+    public PageResponse<AccountDTO> execute(AccountPageQry pageQry) {
+        PageResponse<Account> response = accountGateway.searchPageList(pageQry);
+        return ResultUtils.copyPage(response, AccountDTO::new);
     }
 }

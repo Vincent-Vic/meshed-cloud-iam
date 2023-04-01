@@ -4,4 +4,4 @@
  * @version 1.0
  * @author Vincent Vic
  */
-package cn.meshed.cloud.iam.mobile;
+package cn.meshed.cloud.iam.account.mobile;

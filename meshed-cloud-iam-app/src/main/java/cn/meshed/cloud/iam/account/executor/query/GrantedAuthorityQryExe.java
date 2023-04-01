@@ -1,6 +1,6 @@
 package cn.meshed.cloud.iam.account.executor.query;
 
-import cn.meshed.cloud.cqrs.CommandExecute;
+import cn.meshed.cloud.cqrs.QueryExecute;
 import cn.meshed.cloud.iam.account.query.GrantedAuthorityQry;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
@@ -22,7 +22,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class GrantedAuthorityQryExe implements CommandExecute<GrantedAuthorityQry, SingleResponse<Set<PermissionDTO>>> {
+public class GrantedAuthorityQryExe implements QueryExecute<GrantedAuthorityQry, SingleResponse<Set<PermissionDTO>>> {
 
     private final AccountGateway accountGateway;
 
@@ -33,6 +33,6 @@ public class GrantedAuthorityQryExe implements CommandExecute<GrantedAuthorityQr
     @Override
     public SingleResponse<Set<PermissionDTO>> execute(GrantedAuthorityQry grantedAuthorityQry) {
         Set<Permission> grantedAuthority = accountGateway.getGrantedAuthority(grantedAuthorityQry.getAccountId());
-        return ResultUtils.copySet(grantedAuthority,PermissionDTO::new);
+        return ResultUtils.copySet(grantedAuthority, PermissionDTO::new);
     }
 }

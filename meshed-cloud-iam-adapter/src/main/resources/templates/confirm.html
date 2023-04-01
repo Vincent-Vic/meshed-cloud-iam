@@ -88,17 +88,17 @@
     function yes() {
       console.log('-----------');
       $.ajax({
-        url: '/oauth2/doConfirm',
-        data: {
-          client_id: getParam('client_id'),
-          scope: getParam('scope')
-        },
-        dataType: 'json',
-        success: function(res) {
-          if(res.code == 200) {
-            location.reload(true);
-          } else {
-            // 重定向至授权失败URL
+          url: '/iam/oauth2/doConfirm',
+          data: {
+              client_id: getParam('client_id'),
+              scope: getParam('scope')
+          },
+          dataType: 'json',
+          success: function (res) {
+              if (res.code == 200) {
+                  location.reload(true);
+              } else {
+                  // 重定向至授权失败URL
             layer.alert('授权失败！');
           }
         },

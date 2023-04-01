@@ -5,7 +5,7 @@ import cn.meshed.cloud.iam.account.gatewayimpl.database.dataobject.AccountDO;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.dataobject.AccountRoleDO;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.mapper.AccountMapper;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.mapper.AccountRoleMapper;
-import cn.meshed.cloud.iam.account.query.AccountQry;
+import cn.meshed.cloud.iam.account.query.AccountPageQry;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
@@ -144,17 +144,17 @@ public class AccountGatewayImpl implements AccountGateway {
      * @return
      */
     @Override
-    public PageResponse<Account> searchPageList(AccountQry accountQry) {
+    public PageResponse<Account> searchPageList(AccountPageQry accountQry) {
         Page<Object> page = PageUtils.startPage(accountQry.getPageIndex(), accountQry.getPageSize());
         LambdaQueryWrapper<AccountDO> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(accountQry.getStatus() != null, AccountDO::getStatus,accountQry.getStatus());
+        lqw.eq(accountQry.getStatus() != null, AccountDO::getStatus, accountQry.getStatus());
         lqw.and(lambdaQueryWrapper -> {
             lambdaQueryWrapper.or(StringUtils.isNotBlank(accountQry.getLoginId()))
-                    .like(StringUtils.isNotBlank(accountQry.getLoginId()), AccountDO::getLoginId,accountQry.getLoginId());
+                    .like(StringUtils.isNotBlank(accountQry.getLoginId()), AccountDO::getLoginId, accountQry.getLoginId());
             lambdaQueryWrapper.or()
-                    .like(StringUtils.isNotBlank(accountQry.getPhone()), AccountDO::getPhone,accountQry.getPhone());
+                    .like(StringUtils.isNotBlank(accountQry.getPhone()), AccountDO::getPhone, accountQry.getPhone());
             lambdaQueryWrapper.or()
-                    .like(StringUtils.isNotBlank(accountQry.getEmail()), AccountDO::getEmail,accountQry.getEmail());
+                    .like(StringUtils.isNotBlank(accountQry.getEmail()), AccountDO::getEmail, accountQry.getEmail());
         });
 
         List<AccountDO> list = accountMapper.selectList(lqw);
@@ -201,12 +201,7 @@ public class AccountGatewayImpl implements AccountGateway {
     }
 
 
-    // sub function
-
-
-
     // build
-
     private AccountRoleDO buildAccountRole(Long accountId, Long roleId) {
         AccountRoleDO accountRoleDO = new AccountRoleDO();
         accountRoleDO.setAccountId(accountId);

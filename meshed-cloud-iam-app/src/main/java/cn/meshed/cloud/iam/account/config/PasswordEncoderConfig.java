@@ -14,21 +14,22 @@ import java.util.Map;
 /**
  * <h1>密码编码配置</h1>
  *
- * @author: Vincent Vic
  * @version 1.0
+ * @author: Vincent Vic
  */
 @Configuration
 public class PasswordEncoderConfig {
     /**
      * 配置多密码编码
+     *
      * @return
      */
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         val idForDefault = "bcrypt";
         Map encoders = new HashMap(1);
-        encoders.put(idForDefault,new BCryptPasswordEncoder());
-        return new DelegatingPasswordEncoder(idForDefault,encoders);
+        encoders.put(idForDefault, new BCryptPasswordEncoder());
+        return new DelegatingPasswordEncoder(idForDefault, encoders);
     }
 
 }

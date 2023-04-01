@@ -1,4 +1,4 @@
-package cn.meshed.cloud.iam.web;
+package cn.meshed.cloud.iam.account.web;
 
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.oauth2.config.SaOAuth2Config;
@@ -7,6 +7,7 @@ import cn.dev33.satoken.oauth2.logic.SaOAuth2Util;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.meshed.cloud.iam.account.OAuth2ServerAdapter;
 import cn.meshed.cloud.iam.account.data.LoginSuccessDTO;
 import cn.meshed.cloud.iam.domain.account.ability.DoLoginHandle;
 import com.alibaba.cola.dto.Response;
@@ -25,33 +26,34 @@ import java.util.function.BiFunction;
 
 /**
  * Sa-OAuth2 Server端 控制器
+ *
  * @author kong
- * 
  */
 @RequiredArgsConstructor
 @RestController
-public class SaOAuth2ServerController {
+public class SaOAuth2ServerWebAdapter implements OAuth2ServerAdapter {
 
 	private final DoLoginHandle doLoginHandle;
 
 
 	/**
 	 * 处理所有OAuth相关请求
+	 *
 	 * @return
 	 */
-	@RequestMapping("/oauth2/*")
 	public Object request() {
 		return SaOAuth2Handle.serverRequest();
 	}
 
 	/**
 	 * Sa-OAuth2 定制化配置
+	 *
 	 * @param cfg
 	 */
 	@Autowired
 	public void setSaOAuth2Config(SaOAuth2Config cfg) {
 		cfg.
-			// 未登录的视图
+				// 未登录的视图
 			setNotLoginView(()-> new ModelAndView("login.html")).
 			// 登录处理函数
 			setDoLoginHandle(getDoLoginHandle()).

@@ -9,19 +9,17 @@ import cn.meshed.cloud.iam.account.executor.command.AccountDelExe;
 import cn.meshed.cloud.iam.account.executor.command.AccountGrantRoleCmdExe;
 import cn.meshed.cloud.iam.account.executor.command.AccountLockCmdExe;
 import cn.meshed.cloud.iam.account.executor.query.AccountByIdQryExe;
-import cn.meshed.cloud.iam.account.executor.query.AccountListQryExe;
-import cn.meshed.cloud.iam.account.executor.query.AccountRoleIdListQryExe;
-import cn.meshed.cloud.iam.account.query.AccountByIdQry;
-import cn.meshed.cloud.iam.account.query.AccountQry;
-import cn.meshed.cloud.iam.domain.account.ability.AccountService;
+import cn.meshed.cloud.iam.account.executor.query.AccountPageQryExe;
+import cn.meshed.cloud.iam.account.executor.query.AccountRoleIdsQryExe;
+import cn.meshed.cloud.iam.account.query.AccountPageQry;
+import cn.meshed.cloud.iam.domain.account.ability.AccountAbility;
+import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 /**
  * <h1></h1>
@@ -32,15 +30,15 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class AccountServiceImpl implements AccountService {
-    
+public class AccountAbilityImpl implements AccountAbility {
+
     private final AccountCmdExe accountCmdExe;
-    private final AccountListQryExe accountListQryExe;
+    private final AccountPageQryExe accountPageQryExe;
     private final AccountDelExe accountDelExe;
     private final AccountGrantRoleCmdExe accountGrantRoleCmdExe;
     private final AccountLockCmdExe accountLockCmdExe;
     private final AccountByIdQryExe accountByIdQryExe;
-    private final AccountRoleIdListQryExe accountRoleIdListQryExe;
+    private final AccountRoleIdsQryExe accountRoleIdsQryExe;
 
     /**
      * @param id id
@@ -52,12 +50,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /**
-     * @param accountQry 账号查询对象
+     * 分页列表
+     *
+     * @param pageQry 分页参数
      * @return 操作结果
      */
     @Override
-    public PageResponse<AccountDTO> searchPageList(AccountQry accountQry) {
-        return accountListQryExe.execute(accountQry);
+    public PageResponse<AccountDTO> searchPageList(AccountPageQry pageQry) {
+        return accountPageQryExe.execute(pageQry);
     }
 
     /**
@@ -83,12 +83,12 @@ public class AccountServiceImpl implements AccountService {
     /**
      * 授权用户角色
      *
-     * @param accountByIdQry 账号ID查询对象
+     * @param id 账号ID
      * @return 处理结果
      */
     @Override
-    public SingleResponse<Set<Long>> getAccountRoles(AccountByIdQry accountByIdQry) {
-        return accountRoleIdListQryExe.execute(accountByIdQry);
+    public MultiResponse<Long> getAccountRoles(Long id) {
+        return accountRoleIdsQryExe.execute(id);
     }
 
     /**
@@ -102,13 +102,14 @@ public class AccountServiceImpl implements AccountService {
         return accountLockCmdExe.execute(accountLockCmd);
     }
 
-
     /**
-     * @param accountByIdQry
-     * @return
+     * 查询
+     *
+     * @param accountId 账号ID
+     * @return {@link SingleResponse<AccountDTO>}
      */
     @Override
-    public SingleResponse<AccountDTO> query(AccountByIdQry accountByIdQry) {
-        return null;
+    public SingleResponse<AccountDTO> query(Long accountId) {
+        return accountByIdQryExe.execute(accountId);
     }
 }

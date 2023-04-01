@@ -39,6 +39,6 @@ public class RoleCmdExe implements CommandExecute<RoleCmd, Response> {
             roleCmd.setStatus(Status.VALID);
             op = roleGateway.save(role);
         }
-        return ResultUtils.of(op,"保存失败");
+        return ResultUtils.of(op, "保存失败");
     }
 }

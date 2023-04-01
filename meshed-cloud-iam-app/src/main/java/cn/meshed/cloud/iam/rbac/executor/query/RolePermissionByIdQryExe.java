@@ -1,11 +1,9 @@
 package cn.meshed.cloud.iam.rbac.executor.query;
 
-import cn.meshed.cloud.cqrs.CommandExecute;
+import cn.meshed.cloud.cqrs.QueryExecute;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
 import cn.meshed.cloud.iam.domain.rbac.gateway.RoleGateway;
-import cn.meshed.cloud.iam.rbac.query.RolePermissionByIdQry;
-import cn.meshed.cloud.utils.ResultUtils;
-import com.alibaba.cola.dto.SingleResponse;
+import com.alibaba.cola.dto.MultiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -24,21 +22,21 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class RolePermissionByIdQryExe implements CommandExecute<RolePermissionByIdQry, SingleResponse<Set<Long>>> {
+public class RolePermissionByIdQryExe implements QueryExecute<Long, MultiResponse<Long>> {
 
     private final RoleGateway roleGateway;
 
     /**
-     * @param rolePermissionByIdQry
+     * @param roleId
      * @return
      */
     @Override
-    public SingleResponse<Set<Long>> execute(RolePermissionByIdQry rolePermissionByIdQry) {
-        Set<Permission> permissionSet = roleGateway.getPermissionSet(Collections.singleton(rolePermissionByIdQry.getId()));
-        if (CollectionUtils.isEmpty(permissionSet)){
-            return ResultUtils.ok();
+    public MultiResponse<Long> execute(Long roleId) {
+        Set<Permission> permissionSet = roleGateway.getPermissionSet(Collections.singleton(roleId));
+        if (CollectionUtils.isEmpty(permissionSet)) {
+            return MultiResponse.buildSuccess();
         }
         Set<Long> permissionIdSet = permissionSet.stream().map(Permission::getId).collect(Collectors.toSet());
-        return ResultUtils.of(permissionIdSet);
+        return MultiResponse.of(permissionIdSet);
     }
 }

@@ -1,18 +1,16 @@
 package cn.meshed.cloud.iam.rbac.executor.query;
 
 import cn.meshed.cloud.constant.Status;
-import cn.meshed.cloud.cqrs.CommandExecute;
+import cn.meshed.cloud.cqrs.QueryExecute;
 import cn.meshed.cloud.iam.domain.rbac.gateway.RoleGateway;
 import cn.meshed.cloud.iam.rbac.data.RoleOptionDTO;
 import cn.meshed.cloud.iam.rbac.query.RoleBySelectQry;
 import cn.meshed.cloud.iam.rbac.query.RoleQry;
 import cn.meshed.cloud.utils.ResultUtils;
-import com.alibaba.cola.dto.SingleResponse;
+import com.alibaba.cola.dto.MultiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * <h1></h1>
@@ -23,7 +21,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class RoleBySelectQryExe implements CommandExecute<RoleBySelectQry, SingleResponse<List<RoleOptionDTO>>> {
+public class RoleBySelectQryExe implements QueryExecute<RoleBySelectQry, MultiResponse<RoleOptionDTO>> {
 
     private final RoleGateway roleGateway;
 
@@ -32,9 +30,9 @@ public class RoleBySelectQryExe implements CommandExecute<RoleBySelectQry, Singl
      * @return
      */
     @Override
-    public SingleResponse<List<RoleOptionDTO>> execute(RoleBySelectQry roleBySelectQry) {
+    public MultiResponse<RoleOptionDTO> execute(RoleBySelectQry roleBySelectQry) {
         RoleQry roleQry = new RoleQry();
         roleQry.setStatus(Status.VALID);
-        return ResultUtils.copyList(roleGateway.searchList(roleQry),RoleOptionDTO::new);
+        return ResultUtils.copyMulti(roleGateway.searchList(roleQry), RoleOptionDTO::new);
     }
 }
