@@ -1,9 +1,7 @@
 package cn.meshed.cloud.iam.domain.account;
 
+import cn.meshed.cloud.iam.account.enums.AccountStatusEnum;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
  * <h1>账号</h1>
@@ -23,6 +21,11 @@ public class Account {
      * 账号登入主名称
      */
     private String loginId;
+
+    /**
+     * 账号名称
+     */
+    private String realName;
 
     /**
      * 账号手机号
@@ -50,37 +53,8 @@ public class Account {
     private String secretKey;
 
     /**
-     * 是否过期
-     */
-    private Boolean expired;
-
-    /**
      * 是否锁定
      */
-    private Boolean locked;
+    private AccountStatusEnum status;
 
-    /**
-     * 权限
-     */
-    private Set<String> grantedAuthority;
-
-    /**
-     * 创建人
-     */
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新人
-     */
-    private String updateBy;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
 }

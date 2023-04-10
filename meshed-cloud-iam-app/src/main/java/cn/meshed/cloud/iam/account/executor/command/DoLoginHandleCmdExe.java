@@ -38,13 +38,22 @@ public class DoLoginHandleCmdExe implements CommandExecute<DoLoginHandleCmd, Res
     public SingleResponse<LoginSuccessDTO> execute(DoLoginHandleCmd doLoginHandleCmd) {
         AccountByLoginIdQry accountByLoginIdQry = new AccountByLoginIdQry();
         accountByLoginIdQry.setLoginId(doLoginHandleCmd.getLoginName());
+        //查询登入信息
         SingleResponse<Account> response = accountByLoginIdQryExe.execute(accountByLoginIdQry);
-        if (response == null || !response.isSuccess() || !isLogin(doLoginHandleCmd, response.getData())) {
-            return SingleResponse.buildFailure("400", "账号或密码不正确");
+        if (!response.isSuccess() || !isLogin(doLoginHandleCmd, response.getData())) {
+            return SingleResponse.buildFailure("LOGON_FAIL", "账号不存在或密码不正确");
         }
+        //成功信息处理（以便扩展）
         return loginSuccessCmdExe.execute(CopyUtils.copy(response.getData(), LoginSuccessCmd.class));
     }
 
+    /**
+     * 密码校验
+     *
+     * @param doLoginHandleCmd 登入处理请求命令
+     * @param account          账号信息
+     * @return
+     */
     private Boolean isLogin(DoLoginHandleCmd doLoginHandleCmd, Account account) {
         return encryptionService.matches(doLoginHandleCmd.getPassword(), account.getSecretKey());
     }

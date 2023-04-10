@@ -6,7 +6,7 @@ import cn.meshed.cloud.iam.domain.rbac.gateway.PermissionGateway;
 import cn.meshed.cloud.iam.rbac.data.PermissionDTO;
 import cn.meshed.cloud.iam.rbac.query.PermissionSetQry;
 import cn.meshed.cloud.utils.ResultUtils;
-import com.alibaba.cola.dto.SingleResponse;
+import com.alibaba.cola.dto.MultiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class PermissionSetQryExe implements QueryExecute<PermissionSetQry, SingleResponse<Set<PermissionDTO>>> {
+public class PermissionSetQryExe implements QueryExecute<PermissionSetQry, MultiResponse<PermissionDTO>> {
 
     private final PermissionGateway permissionGateway;
 
@@ -31,8 +31,8 @@ public class PermissionSetQryExe implements QueryExecute<PermissionSetQry, Singl
      * @return
      */
     @Override
-    public SingleResponse<Set<PermissionDTO>> execute(PermissionSetQry permissionSetQry) {
+    public MultiResponse<PermissionDTO> execute(PermissionSetQry permissionSetQry) {
         Set<Permission> permissionSet = permissionGateway.getPermissionSet(permissionSetQry.getRoleIds());
-        return ResultUtils.copySet(permissionSet, PermissionDTO::new);
+        return ResultUtils.copyMulti(permissionSet, PermissionDTO::new);
     }
 }

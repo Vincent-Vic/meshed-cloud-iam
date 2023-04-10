@@ -2,6 +2,7 @@ package cn.meshed.cloud.iam.account.executor.command;
 
 import cn.meshed.cloud.cqrs.CommandExecute;
 import cn.meshed.cloud.iam.account.command.AccountLockCmd;
+import cn.meshed.cloud.iam.account.enums.AccountStatusEnum;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
 import cn.meshed.cloud.utils.ResultUtils;
@@ -31,7 +32,12 @@ public class AccountLockCmdExe implements CommandExecute<AccountLockCmd, Respons
     public Response execute(AccountLockCmd accountLockCmd) {
         //参数校验
         Account account = accountGateway.query(accountLockCmd.getId());
-        account.setLocked(accountLockCmd.isOperate());
-        return ResultUtils.of(accountGateway.save(account));
+        if (accountLockCmd.isOperate()) {
+            account.setStatus(AccountStatusEnum.LOCK);
+        } else {
+            account.setStatus(AccountStatusEnum.VALID);
+        }
+
+        return ResultUtils.of(accountGateway.update(account));
     }
 }

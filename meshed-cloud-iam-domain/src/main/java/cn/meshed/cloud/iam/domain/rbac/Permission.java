@@ -1,11 +1,11 @@
 package cn.meshed.cloud.iam.domain.rbac;
 
 import cn.meshed.cloud.constant.Status;
+import cn.meshed.cloud.iam.rbac.enums.AccessModeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -34,9 +34,9 @@ public class Permission implements Serializable {
     private String name;
 
     /**
-     * 权限英文名称
+     * 权限所属系统
      */
-    private String enname;
+    private Integer ownerId;
 
     /**
      * 授权路径
@@ -44,7 +44,12 @@ public class Permission implements Serializable {
     private String uri;
 
     /**
-     * 权限英文名称
+     * 授权模式
+     */
+    private AccessModeEnum accessMode;
+
+    /**
+     * 权限授权码
      */
     private String access;
 
@@ -57,26 +62,6 @@ public class Permission implements Serializable {
      * 备注
      */
     private String description;
-
-    /**
-     * 创建人
-     */
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新人
-     */
-    private String updateBy;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
 
 
 }

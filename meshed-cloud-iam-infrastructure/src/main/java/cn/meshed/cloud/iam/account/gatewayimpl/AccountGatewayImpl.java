@@ -1,11 +1,12 @@
 package cn.meshed.cloud.iam.account.gatewayimpl;
 
-import cn.meshed.cloud.context.SecurityContext;
+import cn.meshed.cloud.iam.account.data.UserDTO;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.dataobject.AccountDO;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.dataobject.AccountRoleDO;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.mapper.AccountMapper;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.mapper.AccountRoleMapper;
 import cn.meshed.cloud.iam.account.query.AccountPageQry;
+import cn.meshed.cloud.iam.account.query.UserQry;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
@@ -23,7 +24,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,13 +50,13 @@ public class AccountGatewayImpl implements AccountGateway {
      */
     @Override
     public Account getAccountByLoginId(String loginId) {
-        if (StringUtils.isBlank(loginId)){
+        if (StringUtils.isBlank(loginId)) {
             return null;
         }
         LambdaQueryWrapper<AccountDO> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(AccountDO::getLoginId,loginId);
+        lqw.eq(AccountDO::getLoginId, loginId);
         AccountDO accountDO = accountMapper.selectOne(lqw);
-        if (accountDO == null){
+        if (accountDO == null) {
             return null;
         }
         return CopyUtils.copy(accountDO, Account.class);
@@ -73,15 +73,15 @@ public class AccountGatewayImpl implements AccountGateway {
     public Boolean grantRole(Long accountId, Set<Long> roleIds) {
         //先删除旧的
         LambdaQueryWrapper<AccountRoleDO> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(AccountRoleDO::getAccountId,accountId);
+        lqw.eq(AccountRoleDO::getAccountId, accountId);
         accountRoleMapper.delete(lqw);
         //如果不存在，说明删除权限
-        if (CollectionUtils.isEmpty(roleIds)){
+        if (CollectionUtils.isEmpty(roleIds)) {
             return true;
         }
         //构建新的对象
         List<AccountRoleDO> rolePermissions = roleIds.stream()
-                .map(roleId -> buildAccountRole(accountId,roleId))
+                .map(roleId -> buildAccountRole(accountId, roleId))
                 .collect(Collectors.toList());
         //批量添加
         return accountRoleMapper.insertBatch(rolePermissions) > 0;
@@ -95,7 +95,7 @@ public class AccountGatewayImpl implements AccountGateway {
      */
     @Override
     public Set<Permission> getGrantedAuthority(Long accountId) {
-        AssertUtils.isTrue(accountId != null,"账号ID不能为空");
+        AssertUtils.isTrue(accountId != null, "账号ID不能为空");
         Set<Long> roleIds = getAccountRoleIdSet(accountId);
         return roleGateway.getPermissionSet(roleIds);
     }
@@ -103,19 +103,21 @@ public class AccountGatewayImpl implements AccountGateway {
 
     /**
      * 获取账号的角色ID列表
+     *
      * @param accountId 账号ID
      * @return
      */
     public Set<Long> getAccountRoleIdSet(Long accountId) {
-        AssertUtils.isTrue(accountId != null,"账号ID不能为空");
+        AssertUtils.isTrue(accountId != null, "账号ID不能为空");
         LambdaQueryWrapper<AccountRoleDO> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(AccountRoleDO::getAccountId,accountId);
+        lqw.eq(AccountRoleDO::getAccountId, accountId);
         List<AccountRoleDO> accountRoleDOS = accountRoleMapper.selectList(lqw);
-        if (CollectionUtils.isEmpty(accountRoleDOS)){
+        if (CollectionUtils.isEmpty(accountRoleDOS)) {
             return Sets.newHashSet();
         }
         return accountRoleDOS.stream().map(AccountRoleDO::getRoleId).collect(Collectors.toSet());
     }
+
     /**
      * 根据账号获取角色集合
      *
@@ -135,7 +137,7 @@ public class AccountGatewayImpl implements AccountGateway {
      */
     @Override
     public Boolean delete(Long id) {
-        AssertUtils.isTrue(id != null,"Id不能为空");
+        AssertUtils.isTrue(id != null, "Id不能为空");
         return accountMapper.deleteById(id) > 0;
     }
 
@@ -148,17 +150,10 @@ public class AccountGatewayImpl implements AccountGateway {
         Page<Object> page = PageUtils.startPage(accountQry.getPageIndex(), accountQry.getPageSize());
         LambdaQueryWrapper<AccountDO> lqw = new LambdaQueryWrapper<>();
         lqw.eq(accountQry.getStatus() != null, AccountDO::getStatus, accountQry.getStatus());
-        lqw.and(lambdaQueryWrapper -> {
-            lambdaQueryWrapper.or(StringUtils.isNotBlank(accountQry.getLoginId()))
-                    .like(StringUtils.isNotBlank(accountQry.getLoginId()), AccountDO::getLoginId, accountQry.getLoginId());
-            lambdaQueryWrapper.or()
-                    .like(StringUtils.isNotBlank(accountQry.getPhone()), AccountDO::getPhone, accountQry.getPhone());
-            lambdaQueryWrapper.or()
-                    .like(StringUtils.isNotBlank(accountQry.getEmail()), AccountDO::getEmail, accountQry.getEmail());
-        });
-
-        List<AccountDO> list = accountMapper.selectList(lqw);
-        return PageUtils.of(list,page,Account::new);
+        lqw.like(StringUtils.isNotBlank(accountQry.getLoginId()), AccountDO::getLoginId, accountQry.getLoginId());
+        lqw.like(StringUtils.isNotBlank(accountQry.getPhone()), AccountDO::getPhone, accountQry.getPhone());
+        lqw.like(StringUtils.isNotBlank(accountQry.getEmail()), AccountDO::getEmail, accountQry.getEmail());
+        return PageUtils.of(accountMapper.selectList(lqw), page, Account::new);
     }
 
     /**
@@ -168,10 +163,6 @@ public class AccountGatewayImpl implements AccountGateway {
     @Override
     public Boolean save(Account account) {
         AccountDO accountDO = CopyUtils.copy(account, AccountDO.class);
-        accountDO.setCreateBy(SecurityContext.getOperatorString());
-        accountDO.setUpdateBy(SecurityContext.getOperatorString());
-        accountDO.setCreateTime(LocalDateTime.now());
-        accountDO.setUpdateTime(LocalDateTime.now());
         return accountMapper.insert(accountDO) > 0;
     }
 
@@ -181,9 +172,21 @@ public class AccountGatewayImpl implements AccountGateway {
      */
     @Override
     public Boolean update(Account account) {
-        AccountDO accountDO = CopyUtils.copy(account, AccountDO.class);
-        accountDO.setUpdateBy(SecurityContext.getOperatorString());
-        accountDO.setUpdateTime(LocalDateTime.now());
+        AccountDO accountDO = accountMapper.selectById(account.getId());
+        AssertUtils.isTrue(accountDO != null, "账号不存在");
+        //邮箱重置有效
+        if (StringUtils.isBlank(accountDO.getEmail()) || !accountDO.getEmail().equals(account.getEmail())) {
+            //邮箱不存在或者旧邮箱存在但是和新邮箱不匹配，无论新邮箱是否是清空操作都将有效置空
+            accountDO.setEmail(account.getEmail());
+            accountDO.setValidEmail(false);
+        }
+        //邮箱重置有效
+        if (StringUtils.isBlank(accountDO.getPhone()) || !accountDO.getPhone().equals(account.getPhone())) {
+            //手机号不存在或者旧手机号存在但是和新手机号不匹配，无论新手机号是否是清空操作都将有效置空
+            accountDO.setPhone(account.getPhone());
+            accountDO.setValidPhone(false);
+        }
+        accountDO.setRealName(accountDO.getRealName());
         return accountMapper.updateById(accountDO) > 0;
     }
 
@@ -193,11 +196,11 @@ public class AccountGatewayImpl implements AccountGateway {
      */
     @Override
     public Account query(Long id) {
-        AssertUtils.isTrue(id != null,"账号ID不能为空");
+        AssertUtils.isTrue(id != null, "账号ID不能为空");
         AccountDO accountDO = accountMapper.selectById(id);
         //数据层防止密钥数据暴露
         accountDO.setSecretKey(null);
-        return CopyUtils.copy(accountDO,Account.class);
+        return CopyUtils.copy(accountDO, Account.class);
     }
 
 
@@ -207,5 +210,19 @@ public class AccountGatewayImpl implements AccountGateway {
         accountRoleDO.setAccountId(accountId);
         accountRoleDO.setRoleId(roleId);
         return accountRoleDO;
+    }
+
+    /**
+     * <h1>列表</h1>
+     *
+     * @param userQry 查询参数
+     * @return {@link List<UserDTO>}
+     */
+    @Override
+    public List<Account> searchList(UserQry userQry) {
+        AssertUtils.isTrue(CollectionUtils.isNotEmpty(userQry.getIds()), "查询id列表不能为空");
+        LambdaQueryWrapper<AccountDO> lqw = new LambdaQueryWrapper<>();
+        lqw.in(AccountDO::getId, userQry.getIds());
+        return CopyUtils.copyListProperties(accountMapper.selectList(lqw), Account::new);
     }
 }

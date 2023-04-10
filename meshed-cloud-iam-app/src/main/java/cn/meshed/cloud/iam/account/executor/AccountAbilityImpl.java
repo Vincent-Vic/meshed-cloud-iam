@@ -4,6 +4,7 @@ import cn.meshed.cloud.iam.account.command.AccountAddCmd;
 import cn.meshed.cloud.iam.account.command.AccountGrantRoleCmd;
 import cn.meshed.cloud.iam.account.command.AccountLockCmd;
 import cn.meshed.cloud.iam.account.data.AccountDTO;
+import cn.meshed.cloud.iam.account.data.UserDTO;
 import cn.meshed.cloud.iam.account.executor.command.AccountCmdExe;
 import cn.meshed.cloud.iam.account.executor.command.AccountDelExe;
 import cn.meshed.cloud.iam.account.executor.command.AccountGrantRoleCmdExe;
@@ -11,7 +12,9 @@ import cn.meshed.cloud.iam.account.executor.command.AccountLockCmdExe;
 import cn.meshed.cloud.iam.account.executor.query.AccountByIdQryExe;
 import cn.meshed.cloud.iam.account.executor.query.AccountPageQryExe;
 import cn.meshed.cloud.iam.account.executor.query.AccountRoleIdsQryExe;
+import cn.meshed.cloud.iam.account.executor.query.UserByOneQryExe;
 import cn.meshed.cloud.iam.account.query.AccountPageQry;
+import cn.meshed.cloud.iam.account.query.UserByOneQry;
 import cn.meshed.cloud.iam.domain.account.ability.AccountAbility;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
@@ -39,6 +42,7 @@ public class AccountAbilityImpl implements AccountAbility {
     private final AccountLockCmdExe accountLockCmdExe;
     private final AccountByIdQryExe accountByIdQryExe;
     private final AccountRoleIdsQryExe accountRoleIdsQryExe;
+    private final UserByOneQryExe userByOneQryExe;
 
     /**
      * @param id id
@@ -67,6 +71,17 @@ public class AccountAbilityImpl implements AccountAbility {
     @Override
     public Response save(AccountAddCmd accountAddCmd) {
         return accountCmdExe.execute(accountAddCmd);
+    }
+
+    /**
+     * 查询用户
+     *
+     * @param userByOneQry 用户查询
+     * @return {@link SingleResponse< UserDTO >}
+     */
+    @Override
+    public SingleResponse<UserDTO> queryUserById(UserByOneQry userByOneQry) {
+        return userByOneQryExe.execute(userByOneQry);
     }
 
     /**

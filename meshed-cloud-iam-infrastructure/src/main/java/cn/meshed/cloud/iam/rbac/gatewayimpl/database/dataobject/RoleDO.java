@@ -37,9 +37,14 @@ public class RoleDO extends BaseEntity {
     private String name;
 
     /**
-     * 角色英文名称
+     * 角色授权码
      */
-    private String enname;
+    private String access;
+
+    /**
+     * 所属系统
+     */
+    private Integer ownerId;
 
     /**
      * 状态

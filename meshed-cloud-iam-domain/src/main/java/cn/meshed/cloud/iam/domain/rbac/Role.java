@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * <p>
@@ -35,14 +33,14 @@ public class Role implements Serializable {
     private String name;
 
     /**
-     * 角色英文名称
+     * 权限授权码
      */
-    private String enname;
+    private String access;
 
     /**
-     * 权限
+     * 所属系统
      */
-    private List<Long> access;
+    private Integer ownerId;
 
     /**
      * 状态
@@ -53,26 +51,6 @@ public class Role implements Serializable {
      * 备注
      */
     private String description;
-
-    /**
-     * 创建人
-     */
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新人
-     */
-    private String updateBy;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
 
 
 }

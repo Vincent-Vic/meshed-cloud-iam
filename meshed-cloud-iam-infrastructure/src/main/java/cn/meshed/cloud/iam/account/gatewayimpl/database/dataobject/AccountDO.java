@@ -1,7 +1,7 @@
 package cn.meshed.cloud.iam.account.gatewayimpl.database.dataobject;
 
-import cn.meshed.cloud.constant.Status;
 import cn.meshed.cloud.entity.BaseEntity;
+import cn.meshed.cloud.iam.account.enums.AccountStatusEnum;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -31,7 +31,7 @@ public class AccountDO extends BaseEntity {
     /**
      * ID
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
 
@@ -39,6 +39,11 @@ public class AccountDO extends BaseEntity {
      * 账号登入主名称
      */
     private String loginId;
+
+    /**
+     * 账号名称
+     */
+    private String realName;
 
     /**
      * 账号手机号
@@ -67,23 +72,10 @@ public class AccountDO extends BaseEntity {
      */
     private String secretKey;
 
-
-    /**
-     * 是否过期 0 否 1 是
-     */
-    @TableField("is_expired")
-    private Boolean expired;
-
-    /**
-     * 是否锁定 0 否 1 是
-     */
-    @TableField("is_locked")
-    private Boolean locked;
-
     /**
      * 状态
      */
-    @TableField(value = "status")
-    private Status status;
+    @TableField(value = "`status`")
+    private AccountStatusEnum status;
 
 }
