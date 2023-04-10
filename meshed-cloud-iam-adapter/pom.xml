@@ -41,10 +41,17 @@
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-dao-redis-jackson</artifactId>
             <version>${sa-token-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.1.0</version>
         </dependency>
 
         <!-- thymeleaf 视图引擎 -->

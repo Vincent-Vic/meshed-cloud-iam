@@ -33,7 +33,6 @@ public class PermissionBySelectQryExe implements QueryExecute<PermissionBySelect
     public MultiResponse<PermissionOptionDTO> execute(PermissionBySelectQry permissionBySelectQry) {
         PermissionQry permissionQry = new PermissionQry();
         permissionQry.setStatus(Status.VALID);
-        permissionQry.setAccessMode(permissionBySelectQry.getAccessMode());
         return ResultUtils.copyMulti(permissionGateway.searchList(permissionQry), PermissionOptionDTO::new);
     }
 }

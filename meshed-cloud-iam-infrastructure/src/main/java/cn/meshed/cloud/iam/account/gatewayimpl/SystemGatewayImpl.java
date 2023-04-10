@@ -61,6 +61,7 @@ public class SystemGatewayImpl implements SystemGateway {
      */
     @Override
     public Boolean save(System system) {
+        AssertUtils.isTrue(!existFormKey(system.getKey()), "唯一标识已经存在");
         SystemDO systemDO = CopyUtils.copy(system, SystemDO.class);
         return systemMapper.insert(systemDO) > 0;
     }
@@ -76,7 +77,7 @@ public class SystemGatewayImpl implements SystemGateway {
         Page<Object> page = PageUtils.startPage(pageQry.getPageIndex(), pageQry.getPageSize());
         LambdaQueryWrapper<SystemDO> lqw = new LambdaQueryWrapper<>();
         lqw.eq(pageQry.getStatus() != null, SystemDO::getStatus, pageQry.getStatus());
-        lqw.and(lambdaQueryWrapper -> {
+        lqw.and(StringUtils.isNotBlank(pageQry.getKeyword()), lambdaQueryWrapper -> {
             lambdaQueryWrapper.or(StringUtils.isNotBlank(pageQry.getKeyword()))
                     .like(StringUtils.isNotBlank(pageQry.getKeyword()), SystemDO::getKey, pageQry.getKeyword());
             lambdaQueryWrapper.or()

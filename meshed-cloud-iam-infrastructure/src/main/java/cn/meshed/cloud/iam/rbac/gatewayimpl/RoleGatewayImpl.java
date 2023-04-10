@@ -1,6 +1,5 @@
 package cn.meshed.cloud.iam.rbac.gatewayimpl;
 
-import cn.meshed.cloud.context.SecurityContext;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
 import cn.meshed.cloud.iam.domain.rbac.Role;
 import cn.meshed.cloud.iam.domain.rbac.gateway.PermissionGateway;
@@ -18,7 +17,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,9 +56,9 @@ public class RoleGatewayImpl implements RoleGateway {
         LambdaQueryWrapper<RoleDO> lqw = new LambdaQueryWrapper<>();
         String keyword = roleQry.getKeyword();
         if (StringUtils.isNotBlank(keyword)){
-            lqw.or().like(RoleDO::getEnname,keyword);
-            lqw.or().like(RoleDO::getName,keyword);
-            lqw.or().like(RoleDO::getDescription,keyword);
+            lqw.or().like(RoleDO::getAccess, keyword);
+            lqw.or().like(RoleDO::getName, keyword);
+            lqw.or().like(RoleDO::getDescription, keyword);
         }
         lqw.eq(roleQry.getStatus() != null, RoleDO::getStatus,roleQry.getStatus());
         return CopyUtils.copyListProperties(roleMapper.selectList(lqw),Role.class);
@@ -73,10 +71,6 @@ public class RoleGatewayImpl implements RoleGateway {
     @Override
     public Boolean save(Role role) {
         RoleDO roleDO = CopyUtils.copy(role, RoleDO.class);
-        roleDO.setCreateBy(SecurityContext.getOperatorString());
-        roleDO.setUpdateBy(SecurityContext.getOperatorString());
-        roleDO.setCreateTime(LocalDateTime.now());
-        roleDO.setUpdateTime(LocalDateTime.now());
         return roleMapper.insert(roleDO) > 0;
     }
 
@@ -87,8 +81,6 @@ public class RoleGatewayImpl implements RoleGateway {
     @Override
     public Boolean update(Role role) {
         RoleDO roleDO = CopyUtils.copy(role, RoleDO.class);
-        roleDO.setUpdateBy(SecurityContext.getOperatorString());
-        roleDO.setUpdateTime(LocalDateTime.now());
         return roleMapper.updateById(roleDO) > 0;
     }
 
@@ -165,12 +157,14 @@ public class RoleGatewayImpl implements RoleGateway {
     }
 
     /**
-     * @param aLong
-     * @return
+     * 查询角色
+     *
+     * @param roleId 角色ID
+     * @return {@link Role}
      */
     @Override
-    public Role query(Long aLong) {
-        return null;
+    public Role query(Long roleId) {
+        return CopyUtils.copy(roleMapper.selectById(roleId), Role.class);
     }
 
 }

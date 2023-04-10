@@ -5,11 +5,14 @@ import cn.meshed.cloud.cqrs.CommandExecute;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
 import cn.meshed.cloud.iam.domain.rbac.gateway.PermissionGateway;
 import cn.meshed.cloud.iam.rbac.command.PermissionCmd;
+import cn.meshed.cloud.iam.rbac.enums.AccessModeEnum;
+import cn.meshed.cloud.utils.AssertUtils;
 import cn.meshed.cloud.utils.CopyUtils;
 import cn.meshed.cloud.utils.ResultUtils;
 import com.alibaba.cola.dto.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,6 +34,9 @@ public class PermissionCmdExe implements CommandExecute<PermissionCmd, Response>
      */
     @Override
     public Response execute(PermissionCmd permissionCmd) {
+        if (permissionCmd.getAccessMode() == AccessModeEnum.EMPOWER) {
+            AssertUtils.isTrue(StringUtils.isNotBlank(permissionCmd.getAccess()), "授权模式下授权码不能为空");
+        }
         Permission permission = CopyUtils.copy(permissionCmd, Permission.class);
         Boolean op = false;
         if (permission.getId() != null) {

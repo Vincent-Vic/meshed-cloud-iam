@@ -8,7 +8,9 @@ import cn.meshed.cloud.iam.account.command.AccountAddCmd;
 import cn.meshed.cloud.iam.account.command.AccountGrantRoleCmd;
 import cn.meshed.cloud.iam.account.command.AccountLockCmd;
 import cn.meshed.cloud.iam.account.data.AccountDTO;
+import cn.meshed.cloud.iam.account.data.UserDTO;
 import cn.meshed.cloud.iam.account.query.AccountPageQry;
+import cn.meshed.cloud.iam.account.query.UserByOneQry;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
@@ -23,6 +25,14 @@ import com.alibaba.cola.dto.SingleResponse;
 public interface AccountAbility
         extends IPageList<AccountPageQry, PageResponse<AccountDTO>>, ISave<AccountAddCmd, Response>,
         IQuery<Long, SingleResponse<AccountDTO>>, IDelete<Long, Response> {
+
+    /**
+     * 查询用户
+     *
+     * @param userByOneQry 用户查询
+     * @return {@link SingleResponse<UserDTO>}
+     */
+    SingleResponse<UserDTO> queryUserById(UserByOneQry userByOneQry);
 
     /**
      * 授权用户角色

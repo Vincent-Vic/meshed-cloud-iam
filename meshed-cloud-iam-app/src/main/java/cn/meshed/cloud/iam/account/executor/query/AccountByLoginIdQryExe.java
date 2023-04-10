@@ -4,20 +4,17 @@ package cn.meshed.cloud.iam.account.executor.query;
 import cn.meshed.cloud.cqrs.QueryExecute;
 import cn.meshed.cloud.iam.account.data.AccountDTO;
 import cn.meshed.cloud.iam.account.query.AccountByLoginIdQry;
-import cn.meshed.cloud.iam.account.query.GrantedAuthorityQry;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
-import cn.meshed.cloud.iam.rbac.data.PermissionDTO;
+import cn.meshed.cloud.utils.AssertUtils;
+import cn.meshed.cloud.utils.ResultUtils;
 import com.alibaba.cola.dto.SingleResponse;
-import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 /**
  * <h1></h1>
@@ -31,7 +28,6 @@ import java.util.stream.Collectors;
 public class AccountByLoginIdQryExe implements QueryExecute<AccountByLoginIdQry, SingleResponse<Account>> {
 
     private final AccountGateway accountGateway;
-    private final GrantedAuthorityQryExe grantedAuthorityQryExe;
 
     /**
      * <h2>查询执行器</h2>
@@ -42,27 +38,13 @@ public class AccountByLoginIdQryExe implements QueryExecute<AccountByLoginIdQry,
     @Override
     public SingleResponse<Account> execute(AccountByLoginIdQry accountByLoginIdQry) {
         String loginId = accountByLoginIdQry.getLoginId();
-        if (StringUtils.isBlank(loginId)) {
-            return null;
-        }
+        AssertUtils.isTrue(StringUtils.isNotBlank(loginId), "登入账号不能为空");
         Account account = accountGateway.getAccountByLoginId(loginId);
         if (account == null) {
-            return null;
+            return ResultUtils.fail("404", "账号不存在");
         }
 
-        //查询权限
-        Set<String> permissions = getPermissions(account);
-        account.setGrantedAuthority(permissions);
-        return SingleResponse.of(account);
+        return ResultUtils.of(account);
     }
 
-    private Set<String> getPermissions(Account account) {
-        GrantedAuthorityQry grantedAuthorityQry = new GrantedAuthorityQry();
-        grantedAuthorityQry.setAccountId(account.getId());
-        SingleResponse<Set<PermissionDTO>> response = grantedAuthorityQryExe.execute(grantedAuthorityQry);
-        if (!response.isSuccess() || CollectionUtils.isEmpty(response.getData())) {
-            return Sets.newHashSet();
-        }
-        return response.getData().stream().map(PermissionDTO::getEnname).collect(Collectors.toSet());
-    }
 }

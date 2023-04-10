@@ -2,6 +2,7 @@ package cn.meshed.cloud.iam.rbac.gatewayimpl.database.dataobject;
 
 import cn.meshed.cloud.constant.Status;
 import cn.meshed.cloud.entity.BaseEntity;
+import cn.meshed.cloud.iam.rbac.enums.AccessModeEnum;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -37,13 +38,17 @@ public class PermissionDO extends BaseEntity {
     private String name;
 
     /**
-     * 权限英文名称
+     * 所属系统
      */
-    private String enname;
-
+    private Integer ownerId;
 
     /**
-     * 权限英文名称
+     * 授权模式
+     */
+    private AccessModeEnum accessMode;
+
+    /**
+     * 权限授权标识
      */
     private String access;
 

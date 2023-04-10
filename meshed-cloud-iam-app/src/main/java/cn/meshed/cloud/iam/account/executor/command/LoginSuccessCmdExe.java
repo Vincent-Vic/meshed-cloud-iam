@@ -25,7 +25,6 @@ public class LoginSuccessCmdExe implements CommandExecute<LoginSuccessCmd, Singl
      */
     @Override
     public SingleResponse<LoginSuccessDTO> execute(LoginSuccessCmd loginSuccessCmd) {
-
         return ResultUtils.copy(loginSuccessCmd, LoginSuccessDTO.class);
     }
 }

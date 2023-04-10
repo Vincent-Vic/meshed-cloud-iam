@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Vincent Vic
  * @version 1.0
  */
-@EnableDubbo(scanBasePackages = {"cn.meshed.cloud.iam.remote"})
+@EnableDubbo(scanBasePackages = {"cn.meshed.cloud.iam.*.remote"})
 @MapperScan("cn.meshed.cloud.iam.*.gatewayimpl.database.mapper")
 @SpringBootApplication(scanBasePackages = {"cn.meshed.cloud", "com.alibaba.cola"})
 public class ProviderApplication {

@@ -3,6 +3,7 @@ package cn.meshed.cloud.iam.account.executor.command;
 import cn.meshed.cloud.cqrs.CommandExecute;
 import cn.meshed.cloud.iam.account.command.AccountAddCmd;
 import cn.meshed.cloud.iam.account.command.PasswordBuildCmd;
+import cn.meshed.cloud.iam.account.enums.AccountStatusEnum;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.account.ability.EncryptionService;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
@@ -43,6 +44,7 @@ public class AccountCmdExe implements CommandExecute<AccountAddCmd, Response> {
             PasswordBuildCmd passwordBuildCmd = new PasswordBuildCmd();
             passwordBuildCmd.setUnencrypted(accountAddCmd.getSecretKey());
             accountAddCmd.setSecretKey(encryptionService.encode(accountAddCmd.getSecretKey()));
+            account.setStatus(AccountStatusEnum.VALID);
             op = accountGateway.save(account);
         }
         return ResultUtils.of(op, "保存失败");
