@@ -19,5 +19,4 @@ ENTRYPOINT java ${JAVA_OPTS} -jar app.jar
 #暴露7989端口
 EXPOSE 7989
 
-
 #执行前 clean package -U -DskipTests
