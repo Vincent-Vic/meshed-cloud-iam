@@ -17,3 +17,13 @@ VM 参数
 ## swagger Doc
 
 > http://localhost:7989/iam/doc.html
+
+## 部署
+
+### Docker
+
+```shell
+docker login --username=meshed registry.cn-shanghai.aliyuncs.com
+docker pull registry.cn-shanghai.aliyuncs.com/meshed/iam:[最新版本号]
+docker run -e JAVA_OPTS='-DPORT=7989 -DACTIVE=dev -DNACOS_HOST=nacos.meshed.cn -DNACOS_PORT=8848' --net=host registry.cn-shanghai.aliyuncs.com/meshed/iam:[最新版本号]
+```
