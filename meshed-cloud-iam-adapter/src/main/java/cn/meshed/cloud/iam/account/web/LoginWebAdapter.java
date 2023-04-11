@@ -16,6 +16,7 @@ import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +37,10 @@ public class LoginWebAdapter implements LoginAdapter {
     private final SystemAbility systemAbility;
     private final AccountAbility accountAbility;
 
-    private final String OAUTH2_AUTHORIZE = "http://localhost:7989/iam/oauth2/authorize?response_type=%s&client_id=%s&redirect_uri=%s&scope=%s";
+    @Value("${oauth2.host}")
+    private String OAUTH2_HOST;
+
+    private final String OAUTH2_AUTHORIZE = "%s/oauth2/authorize?response_type=%s&client_id=%s&redirect_uri=%s&scope=%s";
     private final String ERROR_REDIRECT = "%s?error=%s";
 
     private final List<String> TYPES = Arrays.asList("code", "token");
@@ -60,7 +64,7 @@ public class LoginWebAdapter implements LoginAdapter {
             try {
                 if (systemResponse.isSuccess()) {
                     System system = systemResponse.getData();
-                    String loginUrl = String.format(OAUTH2_AUTHORIZE, type, system.getClientId(),
+                    String loginUrl = String.format(OAUTH2_AUTHORIZE, OAUTH2_HOST, type, system.getClientId(),
                             redirect, system.getScope());
                     response.sendRedirect(loginUrl);
                 } else {
