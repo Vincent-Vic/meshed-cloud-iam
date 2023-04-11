@@ -25,5 +25,5 @@ VM 参数
 ```shell
 docker login --username=meshed registry.cn-shanghai.aliyuncs.com
 docker pull registry.cn-shanghai.aliyuncs.com/meshed/iam:[最新版本号]
-docker run -e JAVA_OPTS='-DPORT=7989 -DACTIVE=dev -DNACOS_HOST=nacos.meshed.cn -DNACOS_PORT=8848' --net=host registry.cn-shanghai.aliyuncs.com/meshed/iam:[最新版本号]
+docker run -d -e JAVA_OPTS='-DPORT=7989 -DIP_ADDRESS=public-ip -DACTIVE=prod -DNACOS_HOST=nacos-ip -DNACOS_PORT=nacos-port' --net=host registry.cn-shanghai.aliyuncs.com/meshed/iam:[最新版本号]
 ```
