@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    nacos:
+      #服务发现
+      discovery:
+        ip: ${IP_ADDRESS:}
