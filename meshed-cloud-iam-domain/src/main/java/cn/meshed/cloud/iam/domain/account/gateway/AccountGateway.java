@@ -2,9 +2,11 @@ package cn.meshed.cloud.iam.domain.account.gateway;
 
 import cn.meshed.cloud.core.IList;
 import cn.meshed.cloud.core.IPageList;
+import cn.meshed.cloud.core.ISelect;
 import cn.meshed.cloud.gateway.BaseGateway;
 import cn.meshed.cloud.iam.account.query.AccountPageQry;
 import cn.meshed.cloud.iam.account.query.UserQry;
+import cn.meshed.cloud.iam.account.query.UserSelectQry;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
 import cn.meshed.cloud.iam.domain.rbac.Role;
@@ -20,7 +22,8 @@ import java.util.Set;
  * @version 1.0
  */
 public interface AccountGateway extends BaseGateway<Account, Account, Long, Long, Boolean, Account>,
-        IPageList<AccountPageQry, PageResponse<Account>>, IList<UserQry, List<Account>> {
+        IPageList<AccountPageQry, PageResponse<Account>>, IList<UserQry, List<Account>>,
+        ISelect<UserSelectQry, List<Account>> {
 
     /**
      * 根据登入ID获取账号消息  todo 解决敏感信息RPC调用

@@ -1,2 +1,15 @@
 oauth2:
   host: http://localhost:${server.port}/iam
+
+service:
+  security:
+    excludeUris:
+      - /iam/oauth/**
+      - /iam/login/**
+      - /iam/logout
+  mock:
+    enable: true
+    user-id: 1
+    username: name
+    access: 6
+    roles: 6

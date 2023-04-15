@@ -72,6 +72,7 @@ public class SaOAuth2ServerWebAdapter implements OAuth2ServerAdapter {
 			if(response.isSuccess()) {
 				LoginSuccessDTO loginSuccess = response.getData();
 				StpUtil.login(loginSuccess.getId());
+				StpUtil.getSession().set("user", loginSuccess);
 				return response;
 			}
 			return response;

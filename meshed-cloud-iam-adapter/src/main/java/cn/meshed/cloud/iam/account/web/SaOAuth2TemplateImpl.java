@@ -7,6 +7,7 @@ import cn.meshed.cloud.iam.domain.account.System;
 import cn.meshed.cloud.iam.domain.account.ability.SystemAbility;
 import com.alibaba.cola.dto.SingleResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
  *
  * @author kong
  */
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class SaOAuth2TemplateImpl extends SaOAuth2Template {

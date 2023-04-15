@@ -1,12 +1,14 @@
 package cn.meshed.cloud.iam.account.gatewayimpl;
 
 import cn.meshed.cloud.iam.account.data.UserDTO;
+import cn.meshed.cloud.iam.account.enums.AccountStatusEnum;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.dataobject.AccountDO;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.dataobject.AccountRoleDO;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.mapper.AccountMapper;
 import cn.meshed.cloud.iam.account.gatewayimpl.database.mapper.AccountRoleMapper;
 import cn.meshed.cloud.iam.account.query.AccountPageQry;
 import cn.meshed.cloud.iam.account.query.UserQry;
+import cn.meshed.cloud.iam.account.query.UserSelectQry;
 import cn.meshed.cloud.iam.domain.account.Account;
 import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
 import cn.meshed.cloud.iam.domain.rbac.Permission;
@@ -223,6 +225,18 @@ public class AccountGatewayImpl implements AccountGateway {
         AssertUtils.isTrue(CollectionUtils.isNotEmpty(userQry.getIds()), "查询id列表不能为空");
         LambdaQueryWrapper<AccountDO> lqw = new LambdaQueryWrapper<>();
         lqw.in(AccountDO::getId, userQry.getIds());
+        return CopyUtils.copyListProperties(accountMapper.selectList(lqw), Account::new);
+    }
+
+    /**
+     * @param userSelectQry
+     * @return
+     */
+    @Override
+    public List<Account> select(UserSelectQry userSelectQry) {
+        LambdaQueryWrapper<AccountDO> lqw = new LambdaQueryWrapper<>();
+        lqw.select(AccountDO::getId, AccountDO::getLoginId, AccountDO::getRealName)
+                .eq(AccountDO::getStatus, AccountStatusEnum.VALID);
         return CopyUtils.copyListProperties(accountMapper.selectList(lqw), Account::new);
     }
 }

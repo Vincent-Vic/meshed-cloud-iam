@@ -57,4 +57,6 @@ public interface AccountAbility
      * @return 处理结果
      */
     Response operateLock(AccountLockCmd accountLockCmd);
+
+
 }
