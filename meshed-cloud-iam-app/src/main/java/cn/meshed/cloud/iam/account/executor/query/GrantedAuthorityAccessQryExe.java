@@ -7,6 +7,7 @@ import cn.meshed.cloud.iam.domain.rbac.Permission;
 import com.alibaba.cola.dto.MultiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -32,6 +33,9 @@ public class GrantedAuthorityAccessQryExe implements QueryExecute<GrantedAuthori
     @Override
     public MultiResponse<String> execute(GrantedAuthorityQry grantedAuthorityQry) {
         Set<Permission> grantedAuthoritys = accountGateway.getGrantedAuthority(grantedAuthorityQry.getAccountId());
+        if (CollectionUtils.isEmpty(grantedAuthoritys)) {
+            return MultiResponse.buildSuccess();
+        }
         Set<String> accessSet = grantedAuthoritys.stream().map(Permission::getAccess).collect(Collectors.toSet());
         return MultiResponse.of(accessSet);
     }
