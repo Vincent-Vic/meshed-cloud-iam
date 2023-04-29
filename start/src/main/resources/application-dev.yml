@@ -7,9 +7,9 @@ service:
       - /iam/oauth/**
       - /iam/login/**
       - /iam/logout
-  mock:
-    enable: true
-    user-id: 1
-    username: name
-    access: 6
-    roles: 6
+    mock:
+      enable: true
+      user-id: 1
+      username: name
+      access: 6
+      roles: RD:ADMIN

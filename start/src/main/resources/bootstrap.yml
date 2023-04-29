@@ -16,7 +16,7 @@ spring:
         enabled: true
         server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
         # 注册IP复用dubbo vm参数
-        ip: ${DUBBO_IP_TO_REGISTRY}
+        ip: ${DUBBO_IP_TO_REGISTRY:}
         namespace: meshed-cloud
         metadata:
           management:
