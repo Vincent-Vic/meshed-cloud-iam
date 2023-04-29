@@ -43,7 +43,7 @@ public class AccountCmdExe implements CommandExecute<AccountAddCmd, Response> {
         } else {
             PasswordBuildCmd passwordBuildCmd = new PasswordBuildCmd();
             passwordBuildCmd.setUnencrypted(accountAddCmd.getSecretKey());
-            accountAddCmd.setSecretKey(encryptionService.encode(accountAddCmd.getSecretKey()));
+            account.setSecretKey(encryptionService.encode(accountAddCmd.getSecretKey()));
             account.setStatus(AccountStatusEnum.VALID);
             op = accountGateway.save(account);
         }
