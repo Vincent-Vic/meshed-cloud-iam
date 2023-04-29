@@ -1,10 +1,13 @@
 package cn.meshed.cloud.iam.account.remote;
 
 import cn.meshed.cloud.iam.account.UserRpc;
+import cn.meshed.cloud.iam.account.data.AccountDTO;
 import cn.meshed.cloud.iam.account.data.UserDTO;
+import cn.meshed.cloud.iam.account.executor.query.AccountPageQryExe;
 import cn.meshed.cloud.iam.account.executor.query.GrantedAuthorityAccessQryExe;
 import cn.meshed.cloud.iam.account.executor.query.GrantedRoleAccessQryExe;
 import cn.meshed.cloud.iam.account.executor.query.UserByOneQryExe;
+import cn.meshed.cloud.iam.account.query.AccountPageQry;
 import cn.meshed.cloud.iam.account.query.GrantedAuthorityQry;
 import cn.meshed.cloud.iam.account.query.UserByOneQry;
 import cn.meshed.cloud.iam.account.query.UserQry;
@@ -13,6 +16,7 @@ import cn.meshed.cloud.iam.domain.account.gateway.AccountGateway;
 import cn.meshed.cloud.utils.AssertUtils;
 import cn.meshed.cloud.utils.CopyUtils;
 import com.alibaba.cola.dto.MultiResponse;
+import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.SingleResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -32,6 +36,7 @@ import java.util.stream.Collectors;
 public class UserRemote implements UserRpc {
 
     private final UserByOneQryExe userByOneQryExe;
+    private final AccountPageQryExe accountPageQryExe;
     private final GrantedAuthorityAccessQryExe grantedAuthorityAccessQryExe;
     private final GrantedRoleAccessQryExe grantedRoleAccessQryExe;
     private final AccountGateway accountGateway;
@@ -90,5 +95,14 @@ public class UserRemote implements UserRpc {
             return MultiResponse.of(list);
         }
         return MultiResponse.buildSuccess();
+    }
+
+    /**
+     * @param accountPageQry
+     * @return
+     */
+    @Override
+    public PageResponse<AccountDTO> list(AccountPageQry accountPageQry) {
+        return accountPageQryExe.execute(accountPageQry);
     }
 }

@@ -200,6 +200,7 @@ public class AccountGatewayImpl implements AccountGateway {
     public Account query(Long id) {
         AssertUtils.isTrue(id != null, "账号ID不能为空");
         AccountDO accountDO = accountMapper.selectById(id);
+        AssertUtils.isTrue(accountDO != null, "账号不存在");
         //数据层防止密钥数据暴露
         accountDO.setSecretKey(null);
         return CopyUtils.copy(accountDO, Account.class);
