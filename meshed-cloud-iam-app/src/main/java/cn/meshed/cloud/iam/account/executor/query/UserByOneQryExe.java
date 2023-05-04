@@ -48,7 +48,7 @@ public class UserByOneQryExe implements QueryExecute<UserByOneQry, SingleRespons
         assert account != null;
         userDTO.setName(account.getRealName());
         //是否查询用户权限
-        if (userByOneQry.getHasGrantedAuthority()) {
+        if (userByOneQry.getHasGrantedAuthority() != null && userByOneQry.getHasGrantedAuthority()) {
             userDTO.setGrantedRole(getRoles(userByOneQry.getId()));
             userDTO.setGrantedAuthority(getPermissions(userByOneQry.getId()));
         }

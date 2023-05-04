@@ -17,6 +17,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -141,7 +142,10 @@ public class RoleGatewayImpl implements RoleGateway {
      */
     @Override
     public Set<Role> getRoleSet(Set<Long> roleIds) {
-        return null;
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Collections.EMPTY_SET;
+        }
+        return CopyUtils.copySetProperties(roleMapper.selectBatchIds(roleIds), Role::new);
     }
 
     /**
