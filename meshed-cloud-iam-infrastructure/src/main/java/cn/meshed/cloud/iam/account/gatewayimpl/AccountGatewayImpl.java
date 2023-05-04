@@ -189,6 +189,7 @@ public class AccountGatewayImpl implements AccountGateway {
             accountDO.setValidPhone(false);
         }
         accountDO.setRealName(accountDO.getRealName());
+        accountDO.setStatus(account.getStatus());
         return accountMapper.updateById(accountDO) > 0;
     }
 
