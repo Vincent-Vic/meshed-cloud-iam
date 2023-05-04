@@ -54,6 +54,7 @@ public class RoleGatewayImpl implements RoleGateway {
     @Override
     public List<Role> searchList(RoleQry roleQry) {
         LambdaQueryWrapper<RoleDO> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(roleQry.getSystemId() != null, RoleDO::getOwnerId, roleQry.getSystemId());
         String keyword = roleQry.getKeyword();
         if (StringUtils.isNotBlank(keyword)){
             lqw.or().like(RoleDO::getAccess, keyword);
