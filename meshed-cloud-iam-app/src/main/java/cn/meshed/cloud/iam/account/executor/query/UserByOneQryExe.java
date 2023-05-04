@@ -31,6 +31,7 @@ public class UserByOneQryExe implements QueryExecute<UserByOneQry, SingleRespons
 
     private final AccountGateway accountGateway;
     private final GrantedAuthorityAccessQryExe grantedAuthorityAccessQryExe;
+    private final GrantedRoleAccessQryExe grantedRoleAccessQryExe;
 
     /**
      * <h1>查询执行器</h1>
@@ -48,9 +49,20 @@ public class UserByOneQryExe implements QueryExecute<UserByOneQry, SingleRespons
         userDTO.setName(account.getRealName());
         //是否查询用户权限
         if (userByOneQry.getHasGrantedAuthority()) {
+            userDTO.setGrantedRole(getRoles(userByOneQry.getId()));
             userDTO.setGrantedAuthority(getPermissions(userByOneQry.getId()));
         }
         return ResultUtils.of(userDTO);
+    }
+
+    private Set<String> getRoles(Long id) {
+        GrantedAuthorityQry grantedAuthorityQry = new GrantedAuthorityQry();
+        grantedAuthorityQry.setAccountId(id);
+        MultiResponse<String> response = grantedRoleAccessQryExe.execute(grantedAuthorityQry);
+        if (!response.isSuccess() || CollectionUtils.isEmpty(response.getData())) {
+            return Sets.newHashSet();
+        }
+        return new HashSet<>(response.getData());
     }
 
     private Set<String> getPermissions(Long id) {

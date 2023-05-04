@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <h1></h1>
+ * <h1>用户Web适配器</h1>
  *
  * @author Vincent Vic
  * @version 1.0
