@@ -17,6 +17,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,6 +55,7 @@ public class RoleGatewayImpl implements RoleGateway {
     @Override
     public List<Role> searchList(RoleQry roleQry) {
         LambdaQueryWrapper<RoleDO> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(roleQry.getSystemId() != null && roleQry.getSystemId() > 0, RoleDO::getOwnerId, roleQry.getSystemId());
         String keyword = roleQry.getKeyword();
         if (StringUtils.isNotBlank(keyword)){
             lqw.or().like(RoleDO::getAccess, keyword);
@@ -140,7 +142,10 @@ public class RoleGatewayImpl implements RoleGateway {
      */
     @Override
     public Set<Role> getRoleSet(Set<Long> roleIds) {
-        return null;
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Collections.EMPTY_SET;
+        }
+        return CopyUtils.copySetProperties(roleMapper.selectBatchIds(roleIds), Role::new);
     }
 
     /**
