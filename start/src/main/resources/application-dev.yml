@@ -4,9 +4,9 @@ oauth2:
 service:
   security:
     excludeUris:
-      - /iam/oauth/**
-      - /iam/login/**
-      - /iam/logout
+      - /oauth/**
+      - /login/**
+      - /logout
     mock:
       enable: true
       user-id: 1
