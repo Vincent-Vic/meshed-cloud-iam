@@ -52,9 +52,6 @@ public class PermissionGatewayImpl implements PermissionGateway {
     public List<Permission> searchList(PermissionQry permissionQry) {
         LambdaQueryWrapper<PermissionDO> lqw = new LambdaQueryWrapper<>();
         Long systemId = permissionQry.getSystemId();
-        if (systemId <= 0) {
-            systemId = null;
-        }
 
         String keyword = permissionQry.getKeyword();
         if (StringUtils.isNotBlank(keyword)) {
@@ -67,7 +64,7 @@ public class PermissionGatewayImpl implements PermissionGateway {
         }
         lqw.in(CollectionUtils.isNotEmpty(permissionQry.getAccessModes()),
                 PermissionDO::getAccessMode, permissionQry.getAccessModes());
-        lqw.eq(systemId != null, PermissionDO::getOwnerId, systemId);
+        lqw.eq(systemId != null && systemId > 0, PermissionDO::getOwnerId, systemId);
         lqw.eq(permissionQry.getStatus() != null, PermissionDO::getStatus, permissionQry.getStatus());
         List<PermissionDO> list = permissionMapper.selectList(lqw);
         return CopyUtils.copyListProperties(list, Permission::new);
