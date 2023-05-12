@@ -37,6 +37,12 @@ public class PermissionCmdExe implements CommandExecute<PermissionCmd, Response>
         if (permissionCmd.getAccessMode() == AccessModeEnum.EMPOWER) {
             AssertUtils.isTrue(StringUtils.isNotBlank(permissionCmd.getAccess()), "授权模式下授权码不能为空");
         }
+        if (permissionCmd.getParentId() != 0) {
+            Permission permission = permissionGateway.query(permissionCmd.getParentId());
+            AssertUtils.isTrue(permission != null, "父权限不存在");
+            assert permission != null;
+            permissionCmd.setOwnerId(permission.getOwnerId());
+        }
         Permission permission = CopyUtils.copy(permissionCmd, Permission.class);
         Boolean op = false;
         if (permission.getId() != null) {

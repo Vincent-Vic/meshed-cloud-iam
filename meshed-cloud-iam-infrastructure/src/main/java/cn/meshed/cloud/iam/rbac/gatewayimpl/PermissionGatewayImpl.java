@@ -52,7 +52,9 @@ public class PermissionGatewayImpl implements PermissionGateway {
     public List<Permission> searchList(PermissionQry permissionQry) {
         LambdaQueryWrapper<PermissionDO> lqw = new LambdaQueryWrapper<>();
         Long systemId = permissionQry.getSystemId();
-
+        if (systemId <= 0) {
+            systemId = null;
+        }
 
         String keyword = permissionQry.getKeyword();
         if (StringUtils.isNotBlank(keyword)) {
